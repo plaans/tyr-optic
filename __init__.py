@@ -103,6 +103,11 @@ class OpticPlanner(TyrPDDLPlanner):
         retval: int,
         log_messages: Optional[List[LogMessage]] = None,
     ) -> PlanGenerationResultStatus:
+        for log in log_messages:
+            for line in log.message.splitlines():
+                if line.startswith(";; Problem unsolvable!"):
+                    return PlanGenerationResultStatus.UNSOLVABLE_PROVEN
+
         if plan is not None:
             splitted = str(plan).strip().split("\n")
             has_plan = len(splitted) > 1
