@@ -1,6 +1,6 @@
 from fractions import Fraction
 from pathlib import Path
-from typing import Any, List, Optional
+from typing import Any, Dict, List, Optional
 
 from unified_planning.engines.results import (
     LogMessage,
@@ -64,6 +64,11 @@ class OpticPlanner(TyrPDDLPlanner):
 
     def _get_engine_epsilon(self) -> Optional[Fraction]:
         return Fraction(1, 1000)
+
+    def _get_write_domain_options(self) -> Dict[str, bool]:
+        opts = super()._get_write_domain_options()
+        opts["force_predicate"] = True
+        return opts
 
     def _get_computation_time(self, logs: List[LogMessage]) -> Optional[float]:
         for log in logs:
